@@ -4,36 +4,70 @@
 using namespace std;
 
 double function(double x) {
-    return sin(x);
+    return 2 * (x * x * x * x);
 }
 
-double trapezoidalRule(double a, double b, int n) {
-    double h = (double) (b - a) / n;
-    double sum = 0;
-
-    for (int i = 1; i < n; ++i) {
-        sum += function(a + (i * h));
-    }
-    return (h / 2) * (function(a) + function(b) + 2 * sum);
+double firstRow(double a, double b) {
+    double h = fabs(b - a);
+    double sum = h / 2 * (function(a) + function(b));
+    return sum;
 }
 
-double parabolaRule(int a, int b, int n) {
-    double h = (double) (b - a) / n;
-    double sum1 = 0;
-    double sum2 = 0;
+double fourthRow(double a, double b, double c, double d, double e) {
+    double h = fabs(b - a);
 
-    for (int i = 1; i < n; ++i) {
-        sum1 += function(a + (i * h));
+    double sum =
+            (2 * h / 45) * (7 * function(a) + 32 * function(b) + 12 * function(c) + 32 * function(d) + 7 * function(e));
+
+    return sum;
+}
+
+double firstRowIntegral(double a, double b, int n) {
+    double step = fabs(b - a) / n;
+
+    double integral = 0;
+
+    for (int i = 0; i < n; i++) {
+        integral += firstRow(a + i * step, a + step + i * step);
     }
 
-    for (int i = 0; i < n; ++i) {
-        sum2 += function(a + (i * h) + (h / 2));
-    }
+    return integral;
+}
 
-    return (h / 6) * (function(a) + function(b) + 2 * sum1 + 4 * sum2);
+double fourthRowIntegral(double a, double b, int n) {
+    double step = fabs(b - a) / n;
+    double integral = 0;
+    for (int i = 0; i < n; i++) {
+        double x0 = a + i * step;
+        double x4 = a + step + i * step;
+        double x2 = (x0 + x4) / 2;
+        double x3 = (x2 + x4) / 2;
+        double x1 = (x0 + x2) / 2;
+
+
+        integral += fourthRow(x0, x1, x2, x3, x4);
+    }
+    return integral;
+
 }
 
 int main() {
-    cout << parabolaRule(0, 1, 1000) << endl;
+    cout << "1 rzad: " << endl;
+    cout << firstRowIntegral(3, 10, 1) << endl;
+    cout << firstRowIntegral(3, 10, 2) << endl;
+    cout << firstRowIntegral(3, 10, 4) << endl;
+    cout << firstRowIntegral(3, 10, 8) << endl;
+    cout << firstRowIntegral(3, 10, 16) << endl;
+    cout << endl;
+    cout << "2 rzad: " << endl;
+    cout << fourthRowIntegral(3, 10, 1) << endl;
+    cout << fourthRowIntegral(3, 10, 2) << endl;
+    cout << fourthRowIntegral(3, 10, 4) << endl;
+    cout << fourthRowIntegral(3, 10, 8) << endl;
+    cout << fourthRowIntegral(3, 10, 16) << endl;
+    cout << fourthRowIntegral(3, 10, 32) << endl;
+    cout << fourthRowIntegral(3, 10, 64) << endl;
+
+
     return 0;
 }
