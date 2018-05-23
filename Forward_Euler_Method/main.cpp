@@ -17,7 +17,7 @@ void forwardEulerMethod(double y[], double step, int N) {
 
 int main() {
     int N = 5;
-    double step = 0.5;
+    double step = 1;
     double amountOfCounts = N / step;
     auto intAmountOfCounts =(int)amountOfCounts;
     auto *y = new double[intAmountOfCounts];
