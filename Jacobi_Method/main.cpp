@@ -3,7 +3,7 @@
 using namespace std;
 
 void Jacobi_Method(int matrixSize) {
-    const int iteration = 3;
+    const int iteration = 5;
     double N[matrixSize];
     double M[matrixSize][matrixSize];
     double x[matrixSize], xtemp[matrixSize];
